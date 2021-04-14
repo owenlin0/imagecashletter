@@ -10,13 +10,14 @@ import (
 )
 
 func main() {
-	f, err := os.Open(filepath.Join("examples", "imagecashletter-read", "iclFile.x937"))
+	// f, err := os.Open(filepath.Join("examples", "imagecashletter-read", "iclFile.x937"))
+	f, err := os.Open(filepath.Join("test_iclr.937"))
 	if err != nil {
 		log.Fatalf("Could not open ICL File: %s\n", err)
 
 	}
 	defer f.Close()
-	r := imagecashletter.NewReader(f, imagecashletter.ReadVariableLineLengthOption())
+	r := imagecashletter.NewReader(f, imagecashletter.ReadVariableLineLengthOption(), imagecashletter.ReadEbcdicEncodingOption())
 
 	iclFile, err := r.Read()
 	if err != nil {

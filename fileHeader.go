@@ -240,11 +240,11 @@ func (fh *FileHeader) fieldInclusion() error {
 			Value: fh.StandardLevel,
 			Msg:   msgFieldInclusion + ", did you use FileHeader()?"}
 	}
-	if fh.TestFileIndicator == "" {
-		return &FieldError{FieldName: "TestFileIndicator",
-			Value: fh.TestFileIndicator,
-			Msg:   msgFieldInclusion + ", did you use FileHeader()?"}
-	}
+	// if fh.TestFileIndicator == "" {
+	// 	return &FieldError{FieldName: "TestFileIndicator",
+	// 		Value: fh.TestFileIndicator,
+	// 		Msg:   msgFieldInclusion + ", did you use FileHeader()?"}
+	// }
 	if fh.ResendIndicator == "" {
 		return &FieldError{FieldName: "ResendIndicator",
 			Value: fh.ResendIndicator,

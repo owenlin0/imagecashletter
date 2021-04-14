@@ -262,10 +262,10 @@ func (r *Reader) parseLine() error {
 		}
 		// Add Bundle or ReturnBundle to CashLetter
 		if r.currentCashLetter.currentBundle != nil {
-			if err := r.currentCashLetter.currentBundle.Validate(); err != nil {
-				r.recordName = "Bundles"
-				return r.error(err)
-			}
+			// if err := r.currentCashLetter.currentBundle.Validate(); err != nil {
+			// 	r.recordName = "Bundles"
+			// 	return r.error(err)
+			// }
 			r.currentCashLetter.AddBundle(r.currentCashLetter.currentBundle)
 			r.currentCashLetter.currentBundle = new(Bundle)
 		}
@@ -305,9 +305,9 @@ func (r *Reader) parseFileHeader() error {
 	}
 	r.File.Header.Parse(r.decodeLine(r.line))
 	// Ensure valid FileHeader
-	if err := r.File.Header.Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := r.File.Header.Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	return nil
 }
 
@@ -321,9 +321,9 @@ func (r *Reader) parseCashLetterHeader() error {
 	clh := NewCashLetterHeader()
 	clh.Parse(r.decodeLine(r.line))
 	// Ensure we have a valid CashLetterHeader
-	if err := clh.Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := clh.Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	// Passing CashLetterHeader into NewCashLetter creates a CashLetter
 	cl := NewCashLetter(clh)
 	r.addCurrentCashLetter(cl)
@@ -342,9 +342,9 @@ func (r *Reader) parseBundleHeader() error {
 	// Ensure we have a valid bundle header before building a bundle.
 	bh := NewBundleHeader()
 	bh.Parse(r.decodeLine(r.line))
-	if err := bh.Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := bh.Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	// Passing BundleHeader into NewBundle creates a Bundle
 	bundle := NewBundle(bh)
 	r.addCurrentBundle(bundle)
@@ -431,9 +431,9 @@ func (r *Reader) parseReturnDetail() error {
 	}
 	rd := new(ReturnDetail)
 	rd.Parse(r.decodeLine(r.line))
-	if err := rd.Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := rd.Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	if r.currentCashLetter.currentBundle.BundleHeader != nil {
 		r.currentCashLetter.currentBundle.AddReturnDetail(rd)
 	}
@@ -449,9 +449,9 @@ func (r *Reader) parseReturnDetailAddendumA() error {
 	}
 	rdAddendumA := NewReturnDetailAddendumA()
 	rdAddendumA.Parse(r.decodeLine(r.line))
-	if err := rdAddendumA.Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := rdAddendumA.Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	entryIndex := len(r.currentCashLetter.currentBundle.GetReturns()) - 1
 	//r.currentCashLetter.currentBundle.Returns[entryIndex].ReturnDetailAddendumA = rdAddendumA
 	r.currentCashLetter.currentBundle.Returns[entryIndex].AddReturnDetailAddendumA(rdAddendumA)
@@ -467,9 +467,9 @@ func (r *Reader) parseReturnDetailAddendumB() error {
 	}
 	rdAddendumB := NewReturnDetailAddendumB()
 	rdAddendumB.Parse(r.decodeLine(r.line))
-	if err := rdAddendumB.Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := rdAddendumB.Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	entryIndex := len(r.currentCashLetter.currentBundle.GetReturns()) - 1
 	r.currentCashLetter.currentBundle.Returns[entryIndex].AddReturnDetailAddendumB(rdAddendumB)
 	return nil
@@ -502,9 +502,9 @@ func (r *Reader) parseReturnDetailAddendumD() error {
 	}
 	rdAddendumD := NewReturnDetailAddendumD()
 	rdAddendumD.Parse(r.decodeLine(r.line))
-	if err := rdAddendumD.Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := rdAddendumD.Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	entryIndex := len(r.currentCashLetter.currentBundle.GetReturns()) - 1
 	r.currentCashLetter.currentBundle.Returns[entryIndex].AddReturnDetailAddendumD(rdAddendumD)
 	return nil
@@ -524,18 +524,18 @@ func (r *Reader) ImageViewDetail() error {
 	if r.currentCashLetter.currentBundle.GetChecks() != nil {
 		ivDetail := NewImageViewDetail()
 		ivDetail.Parse(r.decodeLine(r.line))
-		if err := ivDetail.Validate(); err != nil {
-			return r.error(err)
-		}
+		// if err := ivDetail.Validate(); err != nil {
+		// 	return r.error(err)
+		// }
 		entryIndex := len(r.currentCashLetter.currentBundle.GetChecks()) - 1
 		r.currentCashLetter.currentBundle.Checks[entryIndex].AddImageViewDetail(ivDetail)
 
 	} else if r.currentCashLetter.currentBundle.GetReturns() != nil {
 		ivDetail := NewImageViewDetail()
 		ivDetail.Parse(r.decodeLine(r.line))
-		if err := ivDetail.Validate(); err != nil {
-			return r.error(err)
-		}
+		// if err := ivDetail.Validate(); err != nil {
+		// 	return r.error(err)
+		// }
 		entryIndex := len(r.currentCashLetter.currentBundle.GetReturns()) - 1
 		r.currentCashLetter.currentBundle.Returns[entryIndex].AddImageViewDetail(ivDetail)
 	} else {
@@ -560,18 +560,18 @@ func (r *Reader) ImageViewData() error {
 	if r.currentCashLetter.currentBundle.GetChecks() != nil {
 		ivData := NewImageViewData()
 		ivData.ParseAndDecode(r.line, r.decodeLine)
-		if err := ivData.Validate(); err != nil {
-			return r.error(err)
-		}
+		// if err := ivData.Validate(); err != nil {
+		// 	return r.error(err)
+		// }
 		entryIndex := len(r.currentCashLetter.currentBundle.GetChecks()) - 1
 		r.currentCashLetter.currentBundle.Checks[entryIndex].AddImageViewData(ivData)
 
 	} else if r.currentCashLetter.currentBundle.GetReturns() != nil {
 		ivData := NewImageViewData()
 		ivData.ParseAndDecode(r.line, r.decodeLine)
-		if err := ivData.Validate(); err != nil {
-			return r.error(err)
-		}
+		// if err := ivData.Validate(); err != nil {
+		// 	return r.error(err)
+		// }
 		entryIndex := len(r.currentCashLetter.currentBundle.GetReturns()) - 1
 		r.currentCashLetter.currentBundle.Returns[entryIndex].AddImageViewData(ivData)
 	} else {
@@ -642,9 +642,9 @@ func (r *Reader) parseBundleControl() error {
 		return r.error(&FileError{Msg: msgFileBundleControl})
 	}
 	r.currentCashLetter.currentBundle.GetControl().Parse(r.decodeLine(r.line))
-	if err := r.currentCashLetter.currentBundle.GetControl().Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := r.currentCashLetter.currentBundle.GetControl().Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	return nil
 }
 
@@ -672,9 +672,9 @@ func (r *Reader) parseCashLetterControl() error {
 	}
 	r.currentCashLetter.GetControl().Parse(r.decodeLine(r.line))
 	// Ensure valid CashLetterControl
-	if err := r.currentCashLetter.GetControl().Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := r.currentCashLetter.GetControl().Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	return nil
 }
 
@@ -687,8 +687,8 @@ func (r *Reader) parseFileControl() error {
 	}
 	r.File.Control.Parse(r.decodeLine(r.line))
 	// Ensure valid FileControl
-	if err := r.File.Control.Validate(); err != nil {
-		return r.error(err)
-	}
+	// if err := r.File.Control.Validate(); err != nil {
+	// 	return r.error(err)
+	// }
 	return nil
 }
